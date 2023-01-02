@@ -1,0 +1,150 @@
+version: "3.6"
+services:
+  external_client:
+    container_name: "ext_client"
+    build:
+      context: ./ExternalClient
+      dockerfile: Dockerfile
+    image: vs/ext_client
+    environment:
+      - DESTINATION=central
+    ports:
+    - 9090:9090
+    networks:
+      verteilte_systeme:
+         ipv4_address: 172.20.0.9
+
+
+  central:
+    container_name: "central"
+    build:
+      context: ./Central
+      dockerfile: Dockerfile
+    image: vs/central
+    environment:
+      - THIRDCENTRAL=thirdcentral
+      - SECONDCENTRAL=secondcentral
+      - SOLARIP=172.20.0.8
+      - COMIP=172.20.0.5
+      - WINDIP=172.20.0.6
+      - NUCIP=172.20.0.7
+    ports:
+      - 8080:8080
+      - 6543:6543
+    networks:
+      verteilte_systeme:
+        ipv4_address: 172.20.0.2
+
+    #Central2
+  secondcentral:
+    container_name: "secondCentral"
+    build:
+      context: ./SecondCentral
+      dockerfile: Dockerfile
+    image: vs/secondcentral
+    environment:
+      - THIRDCENTRAL=thirdcentral
+      - DESTINATION=central
+    ports:
+      - 6544:6544
+    networks:
+      verteilte_systeme:
+        ipv4_address: 172.20.0.11
+
+    #Central3
+  thirdcentral:
+    container_name: "thirdCentral"
+    build:
+      context: ./ThirdCentral
+      dockerfile: Dockerfile
+    image: vs/thirdcentral
+    environment:
+      - SECONDCENTRAL=secondcentral
+      - DESTINATION=central
+    ports:
+      - 6546:6546
+    networks:
+      verteilte_systeme:
+        ipv4_address: 172.20.0.12
+
+  #Consumer
+  consumer:
+    container_name: "consumer"
+    build:
+      context: ./Consumer
+      dockerfile: Dockerfile
+    image: vs/consumer
+    environment:
+      - DESTINATION=central
+    networks:
+      verteilte_systeme:
+        ipv4_address: 172.20.0.5
+
+  household:
+    container_name: "Household"
+    build:
+      context: ./Consumer2
+      dockerfile: Dockerfile
+    image: vs/household
+    environment:
+      - DESTINATION=central
+    networks:
+      verteilte_systeme:
+        ipv4_address: 172.20.0.10
+
+  #Producer
+  coal:
+    container_name: "Coal"
+    build:
+      context: ./Producer/Coalpower
+      dockerfile: Dockerfile
+    image: verteilte_systeme/coal
+    environment:
+      - DESTINATION=central
+    networks:
+      verteilte_systeme:
+        ipv4_address: 172.20.0.14
+
+  windkraft:
+    container_name: "windkraft"
+    build:
+      context: ./Producer/Windpower
+      dockerfile: Dockerfile
+    image: vs/windpower
+    environment:
+      - DESTINATION=central
+    networks:
+      verteilte_systeme:
+          ipv4_address: 172.20.0.6
+
+  atomkraft:
+    container_name: "atomkraft"
+    build:
+      context: ./Producer/Nuclearpower
+      dockerfile: Dockerfile
+    image: vs/nuclearpower
+    environment:
+      - DESTINATION=central
+    networks:
+      verteilte_systeme:
+          ipv4_address: 172.20.0.7
+
+  solarkraft:
+    container_name: "solarkraft"
+    build:
+      context: ./Producer/Solarpower
+      dockerfile: Dockerfile
+    image: vs/solarpower
+    environment:
+      - DESTINATION=central
+    networks:
+      verteilte_systeme:
+          ipv4_address: 172.20.0.8
+
+networks:
+  verteilte_systeme:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/16
+

@@ -1,0 +1,20 @@
+#class file
+**/*.class
+
+#Package files
+**/*.jar
+**/*.lst
+
+#folder
+**/target/
+**/.idea/
+**/lib/
+#**/Thrift
+
+#Intellij Patch
+.modules.xml
+.idea/misc.xml
+*.iml
+
+#other files
+#*/buildSkript.sh

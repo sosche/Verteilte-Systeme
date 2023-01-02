@@ -1,0 +1,34 @@
+#!/bin/bash
+cd Central
+mvn package
+cd .. 
+cd SecondCentral
+mvn package
+cd .. 
+cd ThirdCentral
+mvn package
+cd .. 
+cd Consumer
+mvn package
+cd .. 
+cd Consumer2
+mvn package
+cd .. 
+cd ExternalClient
+mvn package
+cd .. 
+cd Producer
+	cd Nuclearpower
+	mvn package
+	cd .. 
+	cd Solarpower
+	mvn package
+	cd .. 
+	cd Windpower
+	mvn package
+	cd .. 
+	cd Coalpower
+	mvn package
+cd ..
+cd ..
+sudo docker-compose build

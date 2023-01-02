@@ -1,0 +1,57 @@
+Komponenten
+-	Zentralsteuerung eines virtuellen Kraftwerks
+-	4 unabhängige Erzeuger/Verbraucher, davon mindestens 1 Verbraucher
+
+Aufgabe 2
+Funktionale Anforderungen	
+-	Aktuell produzierte bzw. benötigte Strommenge (Einheit kW) an Zentrale melden
+-	Daten sollen von der Konsole sowie über HTTP über einen Webbrowser zugreifbar dargestellt werden
+-	Erzeuger/Verbraucher agieren als Sensoren die folgende Informationen übermitteln 
+    o	Art des Teilnehmers (Erzeuger/Verbraucher)
+    o	Eindeutige ID oder Name des Teilnehmers
+    o	Aktuelle Strommenge (in kW oder andere Einheit)
+-	
+Nicht funktionale Anforderungen
+-	Simulation mit verschiedenen Werten
+    o	Keine Sonne -> KEIN SOLARSTROM
+    o	Kein Wind -> KEIN WINDKRAFT
+-	Komponente können wegen eines Defekts ausfallen
+-	Erzeuger können nicht beliebig viel Strom produzieren -> MAXIMALKAPAZITÄT
+-	http in Zentrale integriert
+-	http Server soll über REST-API Informationen zu den Erzeugern/Verbrauchern inkl. aktuellen Verbrauch und der Verbrauchshistorie (jew. eigene URI) liefern
+-	http Server ohne vorhandene Bibliotheken/Hilfsmitteln implementieren und http GET unterstützen
+-	Server soll User Agent des Browsers protokollieren, der die Anfrage geschickt hat
+-	http GET Anfragen werden komplett und korrekt eingelesen und verarbeitet
+-	Sensoren laufen im Hintergrund weiter
+-	Zentrale bleibt in Kontakt mit Sensoren und http Client
+
+
+Aufgabe 3
+Funktionale Anforderungen
+-	
+Nichtfunktionale Anforderungen
+-	Aktueller Status, sowie gesamte Historie alles Komponenten der Zentralsteuerung an externen Client (Energieversorger) übermitteln#
+-	Datenübermittlung via RPC (Apache Thrift oder gRPC/Protobuf)
+-	Zentrale kann über eine geeignete RPC Schnittstelle einzelne Komponenten an- und ausschalten können (oder Leistung erhöhen)
+-	Erzeuger/Verbraucher benötigen eine RPC Schnittstelle
+
+
+Aufgabe 4
+Funktionale Anforderungen
+-	
+Nichtfunktionale Anforderungen
+-	Sensoren sollen mittels MQTT (Publish/Subscribe) an die Zentrale anschließen
+-	Daten sollen mittels MQTT übertragen werden
+-	!PERFORMANCE-VERGLEICHS TEST UDP BEVOR UMSTELLUNG AUF MQTT!
+
+
+Aufgabe 5
+Funktionale Anforderungen
+-	Mehrere virtuelle Kraftwerke sollen zu einem größeren System zusammengeschaltet werden, sodass die jeweiligen Zentralen miteinander kommunizieren können
+Nichtfunktionale Anforderungen
+-	Jede Zentrale kann über RCP vom externen Client nach dem Status aller Komponenten im gesamten Kraftwerksystem abgefragt werden, unabhängig vom Standort
+-	Gesamte Status der Komponenten muss in der Zentrale vorhanden sein
+-	Die Abfrage soll jeweils ein konsistentes Bild des gesamten Systems liefern und vom Client angezeigt werden
+-	Ausfallsicherheit des Gesamtsystems: zufällige Ausfälle simulieren
+-	Umgang des externen Clients bei Ausfällen oder Verzögerungen bei der Übertragung bzw. Wiederverfügbarkeit
+
